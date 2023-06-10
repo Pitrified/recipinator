@@ -14,6 +14,22 @@ const Step = ({ id, text, handleAddStepAfter }) => {
   );
 };
 
+const StepInput = ({ value, onChange, onAddStepAfter }) => {
+  return (
+    <div className="step-input">
+      <input
+        type="text"
+        className="step-input-text"
+        value={value}
+        onChange={onChange}
+      />
+      <button className="step-input-button" onClick={onAddStepAfter}>
+        Add Step
+      </button>
+    </div>
+  );
+};
+
 const Preparation = ({ id, name, steps, addStep }) => {
   const [newStepText, setNewStepText] = useState("");
   const [selectedStepId, setSelectedStepId] = useState(
@@ -37,17 +53,11 @@ const Preparation = ({ id, name, steps, addStep }) => {
           handleAddStepAfter={() => setSelectedStepId(step.id)}
         />
         {selectedStepId === step.id && (
-          <div>
-            <input
-              type="text"
-              className="step-text"
-              value={newStepText}
-              onChange={(e) => setNewStepText(e.target.value)}
-            />
-            <button className="add-step-button" onClick={handleAddStepAfter}>
-              Add Step
-            </button>
-          </div>
+          <StepInput
+            value={newStepText}
+            onChange={(e) => setNewStepText(e.target.value)}
+            onAddStepAfter={handleAddStepAfter}
+          />
         )}
       </React.Fragment>
     ));

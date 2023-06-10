@@ -20,6 +20,7 @@
 .step-item {
   display: flex;
   align-items: center;
+  margin-top: 10px;
   margin-bottom: 10px;
 }
 
@@ -34,18 +35,27 @@
   padding: 6px;
   border: 1px solid #ccc;
   border-radius: 5px;
-  min-width: 200px; /* Adjust the value to your desired minimum width */
+  min-width: 400px;
 }
 
-.add-step-input {
+.step-input {
   width: 100%;
-  padding: 8px;
+  margin-bottom: 12px;
+  /* padding: 8px; */
+  /* border: 1px solid #ccc; */
+  /* border-radius: 5px; */
+}
+
+.step-input-text {
+  flex-grow: 1;
+  margin-right: 10px;
+  padding: 6px;
   border: 1px solid #ccc;
   border-radius: 5px;
+  width: 60%;
 }
 
-.add-step-button {
-  margin-top: 10px;
+.step-input-button {
   padding: 8px 16px;
   background-color: #4caf50;
   color: #fff;
