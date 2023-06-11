@@ -1,0 +1,75 @@
+.step-item {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.step-item-cont {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    /* flex-grow: 1; */
+    /* margin-right: 10px; */
+    /* padding: 6px; */
+    /* border: 1px solid #ccc; */
+    /* border-radius: 5px; */
+    min-width: 400px;
+}
+
+.step-header {
+    display: flex;
+    flex-grow: 1;
+    align-items: center;
+}
+
+.step-number {
+    margin-right: 10px;
+    font-weight: bold;
+}
+
+.step-text {
+    flex-grow: 1;
+    /* flex-basis: 0; */
+    /* margin-right: 10px; */
+    margin: 0;
+    padding: 6px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    /* min-width: 400px; */
+    word-break: break-word;
+}
+
+.step-actions button {
+    margin-left: 5px;
+}
+
+.step-input {
+    width: 100%;
+    margin-bottom: 12px;
+    /* padding: 8px; */
+    /* border: 1px solid #ccc; */
+    /* border-radius: 5px; */
+}
+
+.step-input-text {
+    flex-grow: 1;
+    margin-right: 10px;
+    padding: 6px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 60%;
+}
+
+.step-input-button {
+    padding: 8px 16px;
+    background-color: #4caf50;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.add-step-button:hover {
+    background-color: #45a049;
+}
