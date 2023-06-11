@@ -41,6 +41,10 @@ npm run dev
 
 ## Flow of the app
 
+### Home
+
+Little more than a placeholder to go to add new recipe or browse recipes.
+
 ### Add a new recipe
 
 Load info from social media
@@ -64,6 +68,9 @@ We have some instagram python API.
 We shove all this info into the data model,
 then we can edit the recipe to add more info.
 
+This is an enhanced version of the edit recipe page,
+with more details to be ready for a copy paste.
+
 ### Browse recipe
 
 Search by title, ingredients, tags, time.
@@ -82,6 +89,10 @@ Show the title, the image, the description, the ingredients, the steps, the tags
 ### Edit a recipe
 
 There is a button to edit the recipe, it opens a new page with the form to edit the recipe.
+
+### Similar recipes
+
+Show similar recipes, manually set and based on the mystical embedding.
 
 ## Data model
 
