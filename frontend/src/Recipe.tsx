@@ -18,7 +18,7 @@ const Step = ({ id, text, handleAddStepAfter }) => {
 
   const handleSaveClick = async () => {
     try {
-      console.log("Step to save:", updatedText);
+      console.log("Step to save:", updatedText, id);
       // const response = await axios.put(`${api_url}/api/step/${id}`, {
       //   text: updatedText,
       // });
@@ -85,7 +85,9 @@ const Preparation = ({ id, name, steps, addStep }) => {
   );
 
   const handleAddStepAfter = () => {
+    console.log("Maybe adding step after:", selectedStepId);
     if (newStepText !== "" && selectedStepId !== null) {
+      console.log("Adding step after:", selectedStepId);
       addStep(id, selectedStepId, newStepText);
       setNewStepText("");
       setSelectedStepId(null);
@@ -98,7 +100,13 @@ const Preparation = ({ id, name, steps, addStep }) => {
         <Step
           id={step.id}
           text={step.text}
-          handleAddStepAfter={() => setSelectedStepId(step.id)}
+          handleAddStepAfter={() => {
+            // If the step is already selected, deselect it
+            if (selectedStepId === step.id) {
+              return setSelectedStepId(null);
+            }
+            return setSelectedStepId(step.id);
+          }}
         />
         {selectedStepId === step.id && (
           <StepInput
