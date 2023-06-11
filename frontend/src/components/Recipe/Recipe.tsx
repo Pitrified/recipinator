@@ -53,9 +53,7 @@ const Recipe = () => {
       {recipeData.preparations.map((preparation) => (
         <Preparation
           key={preparation.id}
-          id={preparation.id}
-          name={preparation.name}
-          steps={preparation.steps}
+          prep={preparation}
           addStep={addStep}
         />
       ))}
