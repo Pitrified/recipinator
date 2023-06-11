@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 
 import "./Step.css";
 
-const Step = ({ id, text, handleAddStepAfter }) => {
+const Step = ({ stepId, text, handleSelectWhichStepAfter }) => {
   const [editing, setEditing] = useState(false);
   const [updatedText, setUpdatedText] = useState(text);
 
@@ -16,8 +16,8 @@ const Step = ({ id, text, handleAddStepAfter }) => {
 
   const handleSaveClick = async () => {
     try {
-      console.log("Step to save:", updatedText, id);
-      // const response = await axios.put(`${api_url}/api/step/${id}`, {
+      console.log("Step to save:", updatedText, stepId);
+      // const response = await axios.put(`${api_url}/api/step/${stepId}`, {
       //   text: updatedText,
       // });
       // console.log("Step saved:", response.data);
@@ -45,14 +45,14 @@ const Step = ({ id, text, handleAddStepAfter }) => {
       ) : (
         <div className="step-item-cont">
           <div className="step-header">
-            <span className="step-number">Step {id}:</span>
+            <span className="step-number">Step {stepId}:</span>
             <p className="step-text">{text}</p>
           </div>
           <div className="step-actions">
             <button className="edit-step-button" onClick={handleEditClick}>
               Edit
             </button>
-            <button onClick={handleAddStepAfter}>+</button>
+            <button onClick={handleSelectWhichStepAfter}>+</button>
           </div>
         </div>
       )}

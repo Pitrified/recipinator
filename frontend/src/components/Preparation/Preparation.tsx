@@ -20,19 +20,21 @@ const Preparation = ({ id, name, steps, addStep }) => {
     }
   };
 
+  const handleSelectWhichStepAfter = (stepId) => {
+    // If the step is already selected, deselect it
+    if (selectedStepId === stepId) {
+      return setSelectedStepId(null);
+    }
+    return setSelectedStepId(stepId);
+  };
+
   const moveInputAfterSelectedStep = () => {
     return steps.map((step) => (
       <React.Fragment key={step.id}>
         <Step
-          id={step.id}
+          stepId={step.id}
           text={step.text}
-          handleAddStepAfter={() => {
-            // If the step is already selected, deselect it
-            if (selectedStepId === step.id) {
-              return setSelectedStepId(null);
-            }
-            return setSelectedStepId(step.id);
-          }}
+          handleSelectWhichStepAfter={() => handleSelectWhichStepAfter(step.id)}
         />
         {selectedStepId === step.id && (
           <StepInput
