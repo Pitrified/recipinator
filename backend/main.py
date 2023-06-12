@@ -51,6 +51,11 @@ recipe_data = Recipe(
             name="Preparation 2",
             steps=[Step(id=1, text="Do 1"), Step(id=2, text="Do 2")],
         ),
+        Preparation(
+            id=3,
+            name="Preparation 3",
+            steps=[],
+        ),
     ],
 )
 
