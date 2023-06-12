@@ -29,6 +29,8 @@ body {
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
+  padding-top: 2.5em;
+  flex-direction: column;
 }
 
 h1 {
