@@ -26,15 +26,20 @@ npm install
 
 ### Run
 
-```bash
-# python backend
-workon py311
-pip install fastapi
-pip install "uvicorn[standard]"
-cd backend/
-uvicorn main:app --reload
+Python backend:
 
-# react frontend
+```bash
+# workon py311
+# pip install fastapi
+# pip install "uvicorn[standard]"
+poetry install
+cd backend/be/src/be/app/
+uvicorn main:app --reload
+```
+
+React frontend:
+
+```
 cd frontend/
 npm run dev
 ```
@@ -70,6 +75,32 @@ then we can edit the recipe to add more info.
 
 This is an enhanced version of the edit recipe page,
 with more details to be ready for a copy paste.
+
+#### Automatic info
+
+We can generate the info automatically, then if needed edit it.
+Yeah it's needed.
+
+* Title? do instagram reels have a title?
+* Image - just use the thumbnail
+
+Python side:
+
+1. from an id get the info
+1. save the image, save the path to that in the class
+1. save the video, save the path to that in the class
+1. if we receive some text description save it
+1. dump the class in a json file
+
+We also update the database.
+
+#### Manual info
+
+The title?
+Minimal tags.
+Some notes to the recipe (simple list of text).
+
+Then we can have a button to convert to standard recipe.
 
 ### Browse recipe
 
