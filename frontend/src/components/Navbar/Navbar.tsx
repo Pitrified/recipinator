@@ -19,6 +19,9 @@ const Navbar = () => {
                     <NavLink to="/about">
                         About
                     </NavLink>
+                    <NavLink to="/dragme">
+                        Drag sample
+                    </NavLink>
                 </NavMenu>
             </Nav>
         </>
