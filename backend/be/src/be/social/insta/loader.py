@@ -16,7 +16,7 @@ from instaloader.structures import Post, Profile
 
 class InstaLoader:
     """Load data from instagram.
-    
+
     Returns data as PostIg objects.
     """
 
@@ -27,7 +27,13 @@ class InstaLoader:
 
     def login(self) -> None:
         """Login."""
-        self.L.interactive_login(self.username)
+        # MAYBE should we check if the session is still valid?
+        # MAYBE should we save in a custom location?
+        try:
+            self.L.load_session_from_file(self.username)
+        except FileNotFoundError:
+            self.L.interactive_login(self.username)
+            self.L.save_session_to_file()
 
     # def _load_post(self, shortcode: str) -> Post:
     #     r"""Load a Post.
