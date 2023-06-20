@@ -30,6 +30,7 @@ const StepMini = ({ step }) => {
       <span>
         {step.text}
       </span>
+      <a href={`/about/${step.id}`}>Go to {step.id}</a>
     </div>
   );
 };
