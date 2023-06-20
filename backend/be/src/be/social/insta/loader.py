@@ -15,7 +15,10 @@ from instaloader.structures import Post, Profile
 
 
 class InstaLoader:
-    """Load data from instagram."""
+    """Load data from instagram.
+    
+    Returns data as PostIg objects.
+    """
 
     def __init__(self, username: str) -> None:
         """Initialize the class."""
@@ -26,33 +29,14 @@ class InstaLoader:
         """Login."""
         self.L.interactive_login(self.username)
 
-    def load_post(self, shortcode: str) -> Post:
-        r"""Load a post.
+    # def _load_post(self, shortcode: str) -> Post:
+    #     r"""Load a Post.
+    #     """
+    #     return Post.from_shortcode(self.L.context, shortcode)
 
-        https://instaloader.github.io/module/structures.html#posts
-
-        Useful properties:
-        - post.caption
-        - post.title
-        - post.profile
-        - post.url
-        - post.video_url
-
-        E.g. shortcode = "CsEj0n9Kefd"
-            p.caption: "GOCHUJANG TOFU MINCE 🔥\n\nthis spicy, sweet..."
-            p.title: ""
-            p.profile: "rhi.scran"
-            p.url: "https://instagram.fmxp7-2.fna.fbcdn.net/v/ ..."
-            p.video_url: "https://instagram.fmxp7-2.fna.fbcdn.net/v/ ..."
-        """
-        return Post.from_shortcode(self.L.context, shortcode)
-
-    def load_post_cache(self, shortcode: str) -> PostIg:
+    def load_post(self, shortcode: str) -> PostIg:
         """Load a post from the cache."""
-        post_ig = PostIg.from_json(shortcode)
-        if post_ig is None:
-            post = self.load_post(shortcode)
-            post_ig = PostIg.from_post_save(post)
+        post_ig = PostIg.load_post(shortcode, self.L)
         return post_ig
 
     def load_profile(self, username: str) -> Profile:
@@ -84,8 +68,8 @@ def main() -> None:
     print(p.caption)
     print(p.title)
     print(p.profile)
-    print(p.url)
-    print(p.video_url)
+    print(p.has_url_media)
+    print(p.has_video_url_media)
 
 
 if __name__ == "__main__":
