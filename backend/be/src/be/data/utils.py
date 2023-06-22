@@ -9,6 +9,7 @@ from loguru import logger as lg
 def get_resource(
     which_res: Literal[
         "root_fol",
+        "data_fol",
         "media_fol",
     ]
 ) -> Path:
@@ -26,5 +27,7 @@ def get_resource(
     # folders that are in the package
     if which_res == "root_fol":
         return Path(__file__).absolute().parents[3]
+    elif which_res == "data_fol":
+        return get_resource("root_fol") / "data"
     elif which_res == "media_fol":
         return get_resource("root_fol") / "data" / "media"
