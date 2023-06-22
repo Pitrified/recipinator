@@ -71,10 +71,13 @@ We have some instagram python API.
        There should be a way to link them, but also customize the sub recipe?
 
 We shove all this info into the data model,
+immediately,
 then we can edit the recipe to add more info.
 
-This is an enhanced version of the edit recipe page,
-with more details to be ready for a copy paste.
+The steps/ingredients/time are deferred to a future edit page.
+
+<!-- This is an enhanced version of the edit recipe page,
+with more details to be ready for a copy paste. -->
 
 #### Automatic info
 
@@ -91,8 +94,17 @@ Python side:
 1. save the video, save the path to that in the class
 1. if we receive some text description save it
 1. dump the class in a json file
+1. shove the PostIg into the database
+1. show the edit page for the recipe
 
-We also update the database.
+While editing, the title is an input, the description is a textarea.
+We have a list of tags, we can add new tags (with proposed tags), we can remove tags.
+Every time we change something, we update the database and reload the recipe.
+
+This is a `VagueRecipe`.
+There will be a button to convert it to a `Recipe`,
+where we can add the ingredients, the steps, the time in a more formal way.
+Possibly in an automated way.
 
 #### Manual info
 
