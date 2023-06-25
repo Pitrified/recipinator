@@ -3,6 +3,10 @@
 backend/be/data/*
 tmp/
 
+*.db
+*.sqlite3
+*.sqlite
+
 ########################## node ##########################
 
 # Logs
