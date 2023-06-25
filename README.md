@@ -137,7 +137,46 @@ There is a button to edit the recipe, it opens a new page with the form to edit 
 
 Show similar recipes, manually set and based on the mystical embedding.
 
-## Data model
+## Data model for minimal recipe
+
+### SimpleRecipe
+
+* RecipeID
+* Title
+* CaptionOriginal
+* CaptionClean
+* HasUrlMedia
+* HasVideoUrlMedia
+
+### RecipeAuthor
+
+Multiple authors for a recipe.
+Not really for a simple recipe, but we can have it.
+
+* RecipeID
+* AuthorID
+
+### Author
+
+* AuthorID
+* Name
+* Link to page
+
+### RecipeTags
+
+Multiple tags for a recipe.
+
+* RecipeID
+* TagID
+
+### Tag
+
+* TagID
+* Name
+
+Then we can have all the fancy tag similarity stuff to filter on them.
+
+## Data model for full recipe
 
 ### Recipe
 
