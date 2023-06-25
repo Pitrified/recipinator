@@ -1,3 +1,8 @@
+"""Sample backend application for the "Recipe" project.
+
+This is a minimal example, with no database connection.
+"""
+
 from typing import List
 
 from fastapi import FastAPI
