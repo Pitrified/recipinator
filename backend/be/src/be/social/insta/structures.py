@@ -78,35 +78,31 @@ class PostIg:
         title = post.title if post.title else ""
 
         # download the media here
-        post_fol = IG_FOL / f"{post.shortcode}"
+        post_fol = IG_FOL / "posts" / f"{post.shortcode}"
         if not post_fol.exists():
             post_fol.mkdir(parents=True)
 
         # save the url content here
         # TODO are those always jpg?
-        r = requests.get(post.url, allow_redirects=True)  # FIXME
+        has_url_media = False
+        r = requests.get(post.url, allow_redirects=True)
         if r.status_code == 200:
-            url_media_fp = post_fol / "p_url.jpg"  # FIXME
-            url_media_fp.write_bytes(r.content)  # FIXME
+            url_media_fp = post_fol / "p_url.jpg"
+            url_media_fp.write_bytes(r.content)
             has_url_media = True
-        else:
-            has_url_media = False
 
         # save the video content here
         # TODO are those always mp4?
+        has_video_url_media = False
         if post.video_url is not None:
-            r = requests.get(post.video_url, allow_redirects=True)  # FIXME
+            r = requests.get(post.video_url, allow_redirects=True)
             if r.status_code == 200:
-                video_url_media_fp = post_fol / "p_video_url.mp4"  # FIXME
-                video_url_media_fp.write_bytes(r.content)  # FIXME
+                video_url_media_fp = post_fol / "p_video_url.mp4"
+                video_url_media_fp.write_bytes(r.content)
                 has_video_url_media = True
-            else:
-                has_video_url_media = False
-        else:
-            has_video_url_media = False
 
         # we have to download the media first to
-        # post_fol = IG_FOL / f"{post.shortcode}"
+        # post_fol = IG_FOL/'posts' / f"{post.shortcode}"
         # then we save the path to the media in this class
         return cls(
             post.shortcode,
@@ -121,7 +117,7 @@ class PostIg:
     def from_json(cls, shortcode: str) -> Self | None:
         """Initialize from a JSON file, if it exists."""
         print(f"Loading post from json {shortcode}...")
-        json_fol = IG_FOL / f"{shortcode}"
+        json_fol = IG_FOL / "posts" / f"{shortcode}"
         # load the data and turn it into a PostIg
         json_fp = json_fol / "data.json"
         if not json_fp.exists():
@@ -143,7 +139,7 @@ class PostIg:
             self,
             jdkwargs=dict(indent=4),
         )
-        post_fol = IG_FOL / f"{self.shortcode}"
+        post_fol = IG_FOL / "posts" / f"{self.shortcode}"
         if not post_fol.exists():
             post_fol.mkdir(parents=True)
         json_fp = post_fol / "data.json"
