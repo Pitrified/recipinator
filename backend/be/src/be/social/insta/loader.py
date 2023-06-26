@@ -9,7 +9,7 @@ so that I can load it into the database later (as many times as needed).
 * https://instaloader.github.io/module/structures.html#profiles
 """
 
-from be.social.insta.structures import PostIg
+from be.social.insta.structures import PostIg, ProfileIg
 from instaloader import instaloader
 from instaloader.structures import Post, Profile
 
@@ -45,7 +45,7 @@ class InstaLoader:
         post_ig = PostIg.load_post(shortcode, self.L)
         return post_ig
 
-    def load_profile(self, username: str) -> Profile:
+    def _load_profile(self, username: str) -> Profile:
         """Load a profile.
 
         https://instaloader.github.io/module/structures.html#profiles
@@ -58,6 +58,11 @@ class InstaLoader:
         - profile.external_url
         """
         return Profile.from_username(self.L.context, username)
+
+    def load_profile(self, username: str) -> ProfileIg:
+        """Load a profile from the cache."""
+        profile_ig = ProfileIg.load_profile(username, self.L)
+        return profile_ig
 
 
 def main() -> None:
