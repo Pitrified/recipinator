@@ -11,7 +11,10 @@ if TYPE_CHECKING:
 class AuthorBase(SQLModel):
     """Base author model."""
 
-    name: str
+    username: str = Field(primary_key=True)
+    userid: int = Field(primary_key=True)
+    full_name: str
+    biography: str
     page_link: str | None = None
 
 
@@ -21,25 +24,26 @@ class Author(AuthorBase, table=True):
     This is a SQLModel table.
     """
 
-    id: int | None = Field(default=None, primary_key=True)
+    # id: int | None = Field(default=None, primary_key=True)
 
-    recipes: list["Recipe"] = Relationship(back_populates="author")
+    # recipes: list["Recipe"] = Relationship(back_populates="author")
 
 
 class AuthorCreate(AuthorBase):
     """Create an author."""
 
-    pass
-
 
 class AuthorRead(AuthorBase):
     """Read an author."""
 
-    id: int
+    # id: int
 
 
 class AuthorUpdate(AuthorBase):
     """Update an author."""
 
-    name: str | None = None
+    username: str
+    userid: int
+    full_name: str | None = None
+    biography: str | None = None
     page_link: str | None = None

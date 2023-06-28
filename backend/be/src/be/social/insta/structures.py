@@ -24,6 +24,7 @@ class PostIg:
     caption: str
     title: str
     profile: str
+    userid: int
     has_url_media: bool
     has_video_url_media: bool
 
@@ -44,7 +45,7 @@ class PostIg:
     @classmethod
     def from_shortcode(cls, shortcode: str, L: Instaloader) -> Self:
         """Initialize from a shortcode."""
-        print(f"Loading post from shortcode {shortcode}...")
+        print(f"Loading post from shortcode {shortcode} ...")
         # get the Post
         post = Post.from_shortcode(L.context, shortcode)
         # turn it into a PostIg
@@ -109,6 +110,7 @@ class PostIg:
             caption,
             title,
             post.profile,
+            post.owner_id,
             has_url_media,
             has_video_url_media,
         )
@@ -116,7 +118,7 @@ class PostIg:
     @classmethod
     def from_json(cls, shortcode: str) -> Self | None:
         """Initialize from a JSON file, if it exists."""
-        print(f"Loading post from json {shortcode}...")
+        print(f"Loading post from json {shortcode} ...")
         json_fol = IG_FOL / "posts" / f"{shortcode}"
         # load the data and turn it into a PostIg
         json_fp = json_fol / "data.json"
@@ -145,6 +147,13 @@ class PostIg:
         json_fp = post_fol / "data.json"
         json_fp.write_text(json_str)
 
+    @staticmethod
+    def has_json(shortcode: str) -> bool:
+        """Check if a JSON file exists."""
+        json_fol = IG_FOL / "posts" / f"{shortcode}"
+        json_fp = json_fol / "data.json"
+        return json_fp.exists()
+
     def __repr__(self) -> str:
         """Return a string representation of this object."""
         clean_cap = self.caption.replace("\n", " ")
@@ -168,7 +177,9 @@ class PostIg:
 class ProfileIg:
     """Instagram profile, saved as json."""
 
+    # username can change for a given author
     username: str
+    userid: int
     full_name: str
     biography: str
     followers: int
@@ -191,7 +202,7 @@ class ProfileIg:
     @classmethod
     def from_username(cls, username: str, L: Instaloader) -> Self:
         """Initialize from a username."""
-        print(f"Loading profile from username {username}...")
+        print(f"Loading profile from username {username} ...")
         # get the Profile
         profile = Profile.from_username(L.context, username)
         # turn it into a ProfileIg
@@ -227,6 +238,7 @@ class ProfileIg:
 
         return cls(
             profile.username,
+            profile.userid,
             profile.full_name,
             profile.biography,
             profile.followers,
@@ -236,7 +248,7 @@ class ProfileIg:
     @classmethod
     def from_json(cls, username: str) -> Self | None:
         """Initialize from a JSON file, if it exists."""
-        print(f"Loading profile from json {username}...")
+        print(f"Loading profile from json {username} ...")
         json_fol = IG_FOL / "profiles" / f"{username}"
         json_fp = json_fol / f"data.json"
         if not json_fp.exists():
@@ -264,6 +276,13 @@ class ProfileIg:
             profile_fol.mkdir(parents=True)
         json_fp = profile_fol / "data.json"
         json_fp.write_text(json_str)
+
+    @staticmethod
+    def has_json(username: str) -> bool:
+        """Check if a JSON file exists."""
+        json_fol = IG_FOL / "profiles" / f"{username}"
+        json_fp = json_fol / "data.json"
+        return json_fp.exists()
 
     def __repr__(self) -> str:
         """Return a string representation of this object."""

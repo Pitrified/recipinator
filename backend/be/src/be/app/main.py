@@ -7,6 +7,8 @@ from be.social.insta.loader import InstaLoader
 from fastapi import Depends, FastAPI, HTTPException
 from sqlmodel import Session
 
+from loguru import logger as lg
+
 from be.app.sqlmodels.Recipe import RecipeReadWithAuthor
 
 # RecipeReadWithAuthor.update_forward_refs()
@@ -80,6 +82,7 @@ def create_recipe(
     # FIXME obviously this is not the right way to do this
     # db_recipe.author = Author.from_orm(recipe.author) ???
     # but really I want the from_orm to automatically populate .author
+    # FAILS NOW :(
     author = Author.from_orm(recipe.author)
     db_recipe.author = author
     print(f"{db_recipe=}")
@@ -97,45 +100,65 @@ def create_recipe_shortcode(
     session: Session = Depends(get_session),
     il: InstaLoader = Depends(get_il),
     shortcode: str,
-) -> RecipeReadWithAuthor:
+    # ) -> RecipeReadWithAuthor:
+) -> RecipeRead:
     """Create a recipe."""
     # load the post from the shortcode
     ps = il.load_post(shortcode)
     pf = il.load_profile(ps.profile)
 
-    author_create = AuthorCreate(
-        name=pf.username,
-    )
-    print(f"built {author_create=}")
+    # try to load an existing author with matching userid and username
+    author_res = session.get(Author, (pf.username, pf.userid))
+    if author_res:
+        lg.debug(f"found existing author {author_res=}")
+        author_read = AuthorRead.from_orm(author_res)
 
-    author = Author.from_orm(author_create)
-    session.add(author)
-    session.commit()
-    session.refresh(author)
-    author_read = AuthorRead.from_orm(author)
-    print(f"  got {author_read=}")
+    # create a new author
+    else:
+        author_create = AuthorCreate(
+            username=pf.username,
+            userid=pf.userid,
+            full_name=pf.full_name,
+            biography=pf.biography,
+        )
+        lg.debug(f"built {author_create=}")
+        author = Author.from_orm(author_create)
+        session.add(author)
+        session.commit()
+        session.refresh(author)
+        author_read = AuthorRead.from_orm(author)
+        lg.debug(f"  got {author_read=}")
 
-    # MAYBE a ps.to_recipe() method?
-    # recipe = RecipeCreate(
-    recipe = Recipe(
-        title=ps.caption,
-        shortcode=ps.shortcode,
-        caption_original=ps.caption,
-        caption_clean=ps.caption,
-        has_url_media=ps.has_url_media,
-        has_video_url_media=ps.has_video_url_media,
-        author_id=author_read.id,
-        author=author,
-        # author=author_create,
-    )
-    print(f"built {recipe=}")
+    recipe_res = session.get(Recipe, ps.shortcode)
+    if recipe_res:
+        lg.debug(f"found existing recipe {recipe_res=}")
+        return_recipe = RecipeRead.from_orm(recipe_res)
 
-    # add the recipe to the database
-    # recipe = Recipe.from_orm(recipe)
-    # recipe.author = Author.from_orm(author_read)
-    session.add(recipe)
-    session.commit()
-    session.refresh(recipe)
-    print(f"  got {recipe=}")
-    return_recipe = RecipeReadWithAuthor.from_orm(recipe)
+    # create a new recipe
+    else:
+        # MAYBE a ps.to_recipe() method?
+        # recipe = RecipeCreate(
+        recipe = Recipe(
+            title=ps.caption[:100],
+            shortcode=ps.shortcode,
+            caption_original=ps.caption,
+            caption_clean=ps.caption,
+            has_url_media=ps.has_url_media,
+            has_video_url_media=ps.has_video_url_media,
+            author_userid=author_read.userid,
+            author_username=author_read.username,
+            # author=author,
+            # author=author_create,
+        )
+        lg.debug(f"built {recipe=}")
+        # add the recipe to the database
+        # recipe = Recipe.from_orm(recipe)
+        # recipe.author = Author.from_orm(author_read)
+        session.add(recipe)
+        session.commit()
+        session.refresh(recipe)
+        lg.debug(f"  got {recipe=}")
+        # return_recipe = RecipeReadWithAuthor.from_orm(recipe)
+        return_recipe = RecipeRead.from_orm(recipe)
+
     return return_recipe

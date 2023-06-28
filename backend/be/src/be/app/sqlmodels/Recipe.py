@@ -13,7 +13,7 @@ class RecipeBase(SQLModel):
     """Base recipe model."""
 
     title: str
-    shortcode: str
+    shortcode: str = Field(primary_key=True)
     caption_original: str
     caption_clean: str
     has_url_media: bool
@@ -26,24 +26,40 @@ class Recipe(RecipeBase, table=True):
     This is a SQLModel table.
     """
 
-    id: int | None = Field(default=None, primary_key=True)
+    # id: int | None = Field(default=None, primary_key=True)
 
-    author_id: int = Field(foreign_key="author.id")
-    author: "Author" = Relationship(back_populates="recipes")
+    author_userid: int = Field(foreign_key="author.userid")
+    author_username: str = Field(foreign_key="author.username")
+
+    # Relationships are a smart idea to do less queries but I can't set two foreign keys
+    # let's learn one step at a time
+    # # author: "Author" = Relationship(back_populates="recipes")
+    # author: "Author" = Relationship(
+    #     back_populates="recipes",
+    #     sa_relationship_kwargs={
+    #         "foreign_keys": [
+    #             author_userid,
+    #             author_username,
+    #         ]
+    #     },
+    # )
+    # # sa_relationship_kwargs={ 'foreign_keys': [updated_by_id] }
 
 
 class RecipeCreate(RecipeBase):
     """Create a recipe."""
 
     # pass
-    author: "Author"
+    # I don't know if this is needed
+    # I just pass the primary keys of the author :'(
+    # author: "Author"
     # author: "Author" = Relationship(back_populates="recipes")
 
 
 class RecipeRead(RecipeBase):
     """Read a recipe."""
 
-    id: int
+    # id: int
 
     # author: "Author" # ? AuthorRead is in RecipeReadWithAuthor
 
