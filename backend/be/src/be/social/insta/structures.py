@@ -178,6 +178,12 @@ class ProfileIg:
     """Instagram profile, saved as json."""
 
     # username can change for a given author
+    # hopefully the userid is fixed
+    # FIXME: the cache is cool, but we should track this change
+    # so we need a new request to IG to get the new userid (if it changed)
+    # then if the userid is the same, we can return the cached profile
+    # OR in the recipe metadata we have the userid already
+    # so we can receive both and do some checks on what exists
     username: str
     userid: int
     full_name: str
