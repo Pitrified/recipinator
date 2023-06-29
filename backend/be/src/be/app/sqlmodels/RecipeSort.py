@@ -4,6 +4,12 @@ A recipe can only have one previous recipe, and can only appear once.
 The first recipe has no previous recipe.
 To select the next recipe, select the recipe with the previous recipe id
 equal to the current recipe id.
+
+Or like a sane person attach a index to each recipe and sort by that.
+When you want to move a recipe,
+update the index of the
+recipes between the current and new position,
+incrementing or decrementing the index as needed.
 """
 
 from sqlmodel import Field, Relationship, Session, SQLModel, create_engine, select
