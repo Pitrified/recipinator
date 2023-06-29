@@ -1,10 +1,16 @@
 """App for the backend service."""
 
+from be.app.crud import (
+    create_author_from_profile,
+    create_recipe_from_post,
+    get_all_recipes,
+    get_recipe_from_shortcode,
+)
 from be.app.database import create_db_and_tables, get_session
 from be.app.sqlmodels.Author import Author, AuthorCreate, AuthorRead
 from be.app.sqlmodels.Recipe import Recipe, RecipeCreate, RecipeRead
 from be.social.insta.loader import InstaLoader
-from fastapi import Depends, FastAPI, HTTPException
+from fastapi import Depends, FastAPI, HTTPException, Query
 from sqlmodel import Session
 
 from loguru import logger as lg
@@ -107,58 +113,20 @@ def create_recipe_shortcode(
     ps = il.load_post(shortcode)
     pf = il.load_profile(ps.profile)
 
-    # try to load an existing author with matching userid and username
-    author_res = session.get(Author, (pf.username, pf.userid))
-    if author_res:
-        lg.debug(f"found existing author {author_res=}")
-        author_read = AuthorRead.from_orm(author_res)
+    author_read = create_author_from_profile(session, pf)
 
-    # create a new author
-    else:
-        author_create = AuthorCreate(
-            username=pf.username,
-            userid=pf.userid,
-            full_name=pf.full_name,
-            biography=pf.biography,
-        )
-        lg.debug(f"built {author_create=}")
-        author = Author.from_orm(author_create)
-        session.add(author)
-        session.commit()
-        session.refresh(author)
-        author_read = AuthorRead.from_orm(author)
-        lg.debug(f"  got {author_read=}")
+    recipe_read = create_recipe_from_post(session, ps, author_read)
 
-    recipe_res = session.get(Recipe, ps.shortcode)
-    if recipe_res:
-        lg.debug(f"found existing recipe {recipe_res=}")
-        return_recipe = RecipeRead.from_orm(recipe_res)
+    return recipe_read
 
-    # create a new recipe
-    else:
-        # MAYBE a ps.to_recipe() method?
-        # recipe = RecipeCreate(
-        recipe = Recipe(
-            title=ps.caption[:100],
-            shortcode=ps.shortcode,
-            caption_original=ps.caption,
-            caption_clean=ps.caption,
-            has_url_media=ps.has_url_media,
-            has_video_url_media=ps.has_video_url_media,
-            author_userid=author_read.userid,
-            author_username=author_read.username,
-            # author=author,
-            # author=author_create,
-        )
-        lg.debug(f"built {recipe=}")
-        # add the recipe to the database
-        # recipe = Recipe.from_orm(recipe)
-        # recipe.author = Author.from_orm(author_read)
-        session.add(recipe)
-        session.commit()
-        session.refresh(recipe)
-        lg.debug(f"  got {recipe=}")
-        # return_recipe = RecipeReadWithAuthor.from_orm(recipe)
-        return_recipe = RecipeRead.from_orm(recipe)
 
-    return return_recipe
+@app.get("/recipes/", response_model=list[RecipeRead])
+def read_recipes(
+    *,
+    session: Session = Depends(get_session),
+    offset: int = 0,
+    limit: int = Query(default=100, lte=100),
+) -> list[RecipeRead]:
+    """Load all recipes with pagination."""
+    recipes = get_all_recipes(session=session, offset=offset, limit=limit)
+    return recipes
