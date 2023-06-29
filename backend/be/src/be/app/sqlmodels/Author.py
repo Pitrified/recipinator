@@ -17,6 +17,21 @@ class AuthorBase(SQLModel):
     biography: str
     page_link: str | None = None
 
+    def __repr__(self) -> str:
+        """Return a string representation of the object."""
+        biography_clean = self.biography[:100].replace("\n", " ")
+        return (
+            f"{self.__class__.__name__}("
+            f"{self.username}"
+            f" : {self.userid}"
+            f" : {biography_clean}"
+            ")"
+        )
+
+    def __str__(self) -> str:
+        """Return a string representation of a Recipe."""
+        return self.__repr__()
+
 
 class Author(AuthorBase, table=True):
     """An author of a recipe.

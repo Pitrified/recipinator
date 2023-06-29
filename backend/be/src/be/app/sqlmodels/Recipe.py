@@ -19,6 +19,20 @@ class RecipeBase(SQLModel):
     has_url_media: bool
     has_video_url_media: bool
 
+    def __repr__(self) -> str:
+        """Return a string representation of a Recipe."""
+        title_clean = self.title.replace("\n", " ")
+        return (
+            f"{self.__class__.__name__}({self.shortcode}"
+            f" : {title_clean}"
+            # f" : {self.caption_original[:100]}"
+            ")"
+        )
+
+    def __str__(self) -> str:
+        """Return a string representation of a Recipe."""
+        return self.__repr__()
+
 
 class Recipe(RecipeBase, table=True):
     """A simple recipe.
