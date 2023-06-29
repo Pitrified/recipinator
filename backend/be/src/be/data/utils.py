@@ -11,6 +11,7 @@ def get_resource(
         "root_fol",
         "data_fol",
         "media_fol",
+        "database_fp",
     ]
 ) -> Path:
     """Get the path of the requested resource."""
@@ -31,3 +32,5 @@ def get_resource(
         return get_resource("root_fol") / "data"
     elif which_res == "media_fol":
         return get_resource("root_fol") / "data" / "media"
+    elif which_res == "database_fp":
+        return get_resource("data_fol") / "database.db"
