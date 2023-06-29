@@ -245,3 +245,9 @@ Multiple steps for a preparation.
 ## Ideas
  
 The serve stat could be dynamic, like a slider that changes the quantities of the ingredients.
+
+### Graph of recipes
+
+We can have a graph of recipes, with edges between similar recipes.
+Embedding of recipes, then we can have a graph of recipes.
+Zoom in and out, click on a recipe to see it, hover to see the preview.
