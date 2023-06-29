@@ -35,29 +35,10 @@ class InstaLoader:
             self.L.interactive_login(self.username)
             self.L.save_session_to_file()
 
-    # def _load_post(self, shortcode: str) -> Post:
-    #     r"""Load a Post.
-    #     """
-    #     return Post.from_shortcode(self.L.context, shortcode)
-
     def load_post(self, shortcode: str) -> PostIg:
         """Load a post from the cache."""
         post_ig = PostIg.load_post(shortcode, self.L)
         return post_ig
-
-    def _load_profile(self, username: str) -> Profile:
-        """Load a profile.
-
-        https://instaloader.github.io/module/structures.html#profiles
-
-        Useful properties:
-        - profile.full_name
-        - profile.biography
-        - profile.followers
-        - profile.profile_pic_url
-        - profile.external_url
-        """
-        return Profile.from_username(self.L.context, username)
 
     def load_profile(self, username: str) -> ProfileIg:
         """Load a profile from the cache."""
