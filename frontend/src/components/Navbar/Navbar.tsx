@@ -25,6 +25,9 @@ const Navbar = () => {
                     <NavLink to="/searchme">
                         Search sample
                     </NavLink>
+                    <NavLink to="/recipelist">
+                        Recipe list
+                    </NavLink>
                 </NavMenu>
             </Nav>
         </>
