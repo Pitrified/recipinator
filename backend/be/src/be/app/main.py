@@ -12,6 +12,7 @@ from be.app.sqlmodels.Recipe import Recipe, RecipeCreate, RecipeRead
 from be.social.insta.loader import InstaLoader
 from fastapi import Depends, FastAPI, HTTPException, Query
 from sqlmodel import Session
+from fastapi.middleware.cors import CORSMiddleware
 
 from loguru import logger as lg
 
@@ -37,6 +38,14 @@ def get_il() -> InstaLoader:
 
 
 app = FastAPI()
+
+# Enable CORS (Cross-Origin Resource Sharing) to allow requests from the frontend
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Update this list with the appropriate frontend URL(s)
+    allow_methods=["POST"],
+    allow_headers=["Content-Type"],
+)
 
 
 @app.on_event("startup")
