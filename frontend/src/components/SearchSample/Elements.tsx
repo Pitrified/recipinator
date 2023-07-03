@@ -4,8 +4,8 @@ import "./Elements.css";
 
 const SearchBox = () => {
   const [inputValue, setInputValue] = useState('');
-  const [selectedTags, setSelectedTags] = useState([]);
-  const [disabledTags, setDisabledTags] = useState([]);
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const [disabledTags, setDisabledTags] = useState<string[]>([]);
   const availableTags = ['Tag1', 'Tag2', 'Tag3']; // Replace with your own available tags
 
   const handleInputChange = (e) => {
@@ -13,14 +13,14 @@ const SearchBox = () => {
     console.log("inputValue: ", inputValue);
   };
 
-  const handleTagClick = (tag) => {
+  const handleTagClick = (tag: string) => {
     // sort tags alphabetically
     const sortedTags = [...selectedTags, tag].sort((a, b) => a.localeCompare(b));
     setSelectedTags(sortedTags);
     setDisabledTags([...disabledTags, tag]);
   };
 
-  const handleRemoveTag = (tag) => {
+  const handleRemoveTag = (tag: string) => {
     setSelectedTags(selectedTags.filter((selectedTag) => selectedTag !== tag));
     setDisabledTags(disabledTags.filter((disabledTag) => disabledTag !== tag));
   };

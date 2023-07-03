@@ -8,7 +8,7 @@ import RecipeCard from "../RecipeCard/RecipeCard";
 import "./RecipeList.css";
 
 const RecipeList = () => {
-  const [recipeData, setRecipeData] = useState(null);
+  const [recipeData, setRecipeData] = useState<any[]>([]);
 
   useEffect(() => {
     fetchRecipeData();
@@ -24,7 +24,8 @@ const RecipeList = () => {
     }
   };
 
-  if (!recipeData) {
+  // check for the length of the array
+  if (recipeData.length === 0) {
     return <div>Loading...</div>;
   }
 
