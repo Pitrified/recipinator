@@ -242,9 +242,19 @@ Multiple steps for a preparation.
 * Name
 * Unit
 
+## Browse recipes frontend
+
+* `RecipeBrowser`: load the recipe list, the available tags, filter the recipes and pass those to the `RecipeSorter`
+    * `SearchBar`: get a list of tags, search by title (input arrives from outside), when those change send the new search to the `RecipeBrowser` (the owner of the selection state)
+    * `RecipeSorter`: get a list of recipes, sortable by hand, when that change send the new list to the `RecipeBrowser`
+        * `RecipeCard`: get a recipe, show the image and title, when clicked go to the recipe page
+
 ## Ideas
  
 The serve stat could be dynamic, like a slider that changes the quantities of the ingredients.
+
+When clicking on a recipe, we can have a preview of the recipe at the side of the screen, with the image, the title, the description, the ingredients, the steps, the tags, the time.
+Basically if we have a RecipeShow component, fire that up to the side.
 
 ### Graph of recipes
 
