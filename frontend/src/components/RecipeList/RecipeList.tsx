@@ -3,9 +3,17 @@ import axios from "axios";
 
 import { API_URL } from "../../config";
 
-import RecipeCard from "../RecipeCard/RecipeCard";
-
 import "./RecipeList.css";
+
+// minimal recipe data shower
+const RecipeCard = ({ recipe }) => {
+  return (
+    <div className="recipe-card">
+      <h2 className="recipe-name">{recipe.title}</h2>
+    </div>
+  );
+};
+
 
 const RecipeList = () => {
   const [recipeData, setRecipeData] = useState<any[]>([]);

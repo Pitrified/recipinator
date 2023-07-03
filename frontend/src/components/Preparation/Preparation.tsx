@@ -9,6 +9,13 @@ const Preparation = ({ prep, addStep }) => {
   const [selectedStepId, setSelectedStepId] = useState(
     prep.steps[prep.steps.length - 1]?.id
   );
+  console.log(
+    "Selected step:",
+    selectedStepId,
+    " for ",
+    prep.id,
+    prep.steps.length
+  );
 
   const handleAddStepAfter = () => {
     console.log("Maybe adding step after:", selectedStepId);
