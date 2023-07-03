@@ -1,0 +1,7 @@
+.search-box-input-bar {
+  margin: 5px;
+  padding: 6px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  word-break: break-word;
+}

@@ -139,3 +139,14 @@ def read_recipes(
     """Load all recipes with pagination."""
     recipes = get_all_recipes(session=session, offset=offset, limit=limit)
     return recipes
+
+
+@app.get("/tags")
+def read_tags(
+    *,
+    session: Session = Depends(get_session),
+) -> list[str]:
+    """Load all tags."""
+    # tags = get_all_tags(session=session)
+    tags = ["#tag1", "#tag2", "#tag3"]
+    return tags

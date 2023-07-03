@@ -5,33 +5,22 @@ import React from "react";
 import { Nav, NavLink, NavMenu } from "./Elements";
 
 import "./Navbar.css";
- 
+
 const Navbar = () => {
-    console.log("Navbar load");
-    return (
-        <>
-            <Nav>
-                <NavMenu>
-                    {/* <NavLink to="/about" activeStyle> */}
-                    <NavLink to="/">
-                        Recipez
-                    </NavLink>
-                    <NavLink to="/about">
-                        About
-                    </NavLink>
-                    <NavLink to="/dragme">
-                        Drag sample
-                    </NavLink>
-                    <NavLink to="/searchme">
-                        Search sample
-                    </NavLink>
-                    <NavLink to="/recipelist">
-                        Recipe list
-                    </NavLink>
-                </NavMenu>
-            </Nav>
-        </>
-    );
+  console.log("Navbar load");
+  return (
+    <Nav>
+      <NavMenu>
+        {/* <NavLink to="/about" activeStyle> */}
+        <NavLink to="/">Recipez</NavLink>
+        <NavLink to="/about">About</NavLink>
+        <NavLink to="/dragme">Drag sample</NavLink>
+        <NavLink to="/searchme">Search sample</NavLink>
+        <NavLink to="/recipelist">Recipe list</NavLink>
+        <NavLink to="/recipebrowse">Recipe browse</NavLink>
+      </NavMenu>
+    </Nav>
+  );
 };
- 
+
 export default Navbar;
