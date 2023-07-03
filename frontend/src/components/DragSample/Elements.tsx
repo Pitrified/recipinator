@@ -1,35 +1,16 @@
 import React from "react";
-
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
-
-// fix strict mode failure
-// https://github.com/atlassian/react-beautiful-dnd/issues/2399
 import { useEffect, useState } from "react";
-export const StrictModeDroppable = ({ children, ...props }) => {
-  const [enabled, setEnabled] = useState(false);
-  useEffect(() => {
-    const animation = requestAnimationFrame(() => setEnabled(true));
-    return () => {
-      cancelAnimationFrame(animation);
-      setEnabled(false);
-    };
-  }, []);
-  if (!enabled) {
-    return null;
-  }
-  return <Droppable {...props}>{children}</Droppable>;
-};
+
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+
+import StrictModeDroppable from "../StrictModeDroppable/StrictModeDroppable";
 
 // a simple step in a recipe
 const StepMini = ({ step }) => {
   return (
     <div>
-      <span>
-        {step.idString}:&nbsp;
-      </span>
-      <span>
-        {step.text}
-      </span>
+      <span>{step.idString}:&nbsp;</span>
+      <span>{step.text}</span>
       <a href={`/about/${step.id}`}>Go to {step.id}</a>
     </div>
   );
@@ -41,7 +22,12 @@ const PreparationMini = ({ prep }) => {
 
   const handleDragEnd = (result) => {
     console.log(result);
-    console.log('moving from', result.source.index, 'to', result.destination.index);
+    console.log(
+      "moving from",
+      result.source.index,
+      "to",
+      result.destination.index
+    );
 
     if (!result.destination) return; // Not dropped in a valid location
 
@@ -70,7 +56,8 @@ const PreparationMini = ({ prep }) => {
             >
               {steps.map((step, index) => (
                 <Draggable
-                  key={step.idString} draggableId={step.idString}
+                  key={step.idString}
+                  draggableId={step.idString}
                   index={index}
                 >
                   {(provided) => (
@@ -92,6 +79,5 @@ const PreparationMini = ({ prep }) => {
     </DragDropContext>
   );
 };
-
 
 export default PreparationMini;
