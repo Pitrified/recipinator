@@ -22,6 +22,19 @@ const RecipeSorter = ({ recipes, handleDragEnd }) => {
       "to",
       result.destination.index
     );
+    
+    // the droppableId is the whole list we are moving
+    // console.log("moving from", result.source.droppableId);
+    // console.log("moving to", result.destination.droppableId);
+
+    // print info on draggableId
+    console.log("draggableId", result.draggableId);
+
+    // use the index to get the recipes in the array
+    const clickedRecipe = recipes[result.source.index];
+    const replacedRecipe = recipes[result.destination.index];
+    console.log("clickedRecipe", clickedRecipe.shortcode);
+    console.log("replacedRecipe", replacedRecipe.shortcode);
 
     // extract the shortcodes and send those to the RecipeBrowser
     // handleDragEnd(result);
@@ -39,11 +52,11 @@ const RecipeSorter = ({ recipes, handleDragEnd }) => {
                 ref={provided.innerRef}
                 className="recipe-sorter-list"
               >
-                {recipes.map((recipe) => (
+                {recipes.map((recipe, idx) => (
                   <Draggable
                     key={recipe.shortcode}
                     draggableId={recipe.shortcode}
-                    index={0} // FIXME the drag works badly probably needs this ops
+                    index={idx}
                   >
                     {(provided) => (
                       <li
