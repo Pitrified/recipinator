@@ -5,13 +5,17 @@ import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
 import StrictModeDroppable from "../StrictModeDroppable/StrictModeDroppable";
 
+import "./Elements.css";
+
 // a simple step in a recipe
 const StepMini = ({ step }) => {
   return (
-    <div>
-      <span>{step.idString}:&nbsp;</span>
-      <span>{step.text}</span>
-      <a href={`/about/${step.id}`}>Go to {step.id}</a>
+    <div className="step-container">
+      <span className="step-id">{step.idString}:</span>
+      <span className="step-text">{step.text}</span>
+      <a href={`/about/${step.id}`} className="step-link">
+        Go to {step.id}
+      </a>
     </div>
   );
 };
@@ -45,11 +49,11 @@ const PreparationMini = ({ prep }) => {
 
   return (
     <DragDropContext onDragEnd={handleDragEnd}>
-      <div>
+      <div className="drag-drop-context">
         <h2>{prep.name}</h2>
         <StrictModeDroppable droppableId="preparation-steps">
           {(provided) => (
-            <ol
+            <div
               {...provided.droppableProps}
               ref={provided.innerRef}
               className="preparation-list"
@@ -61,18 +65,19 @@ const PreparationMini = ({ prep }) => {
                   index={index}
                 >
                   {(provided) => (
-                    <li
+                    <div
                       {...provided.draggableProps}
                       {...provided.dragHandleProps}
                       ref={provided.innerRef}
+                      className="draggable-step"
                     >
                       <StepMini step={step} />
-                    </li>
+                    </div>
                   )}
                 </Draggable>
               ))}
               {provided.placeholder}
-            </ol>
+            </div>
           )}
         </StrictModeDroppable>
       </div>

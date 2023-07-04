@@ -1,0 +1,36 @@
+.preparation-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.draggable-step {
+  padding: 8px;
+  background-color: lightgray;
+  border-radius: 4px;
+}
+
+.step-container {
+  display: flex;
+  align-items: center;
+}
+
+.step-id {
+  font-weight: bold;
+  margin-right: 4px;
+}
+
+.step-text {
+  flex: 1;
+}
+
+.step-link {
+  margin-left: 8px;
+  color: blue;
+}
+
+/* Set a fixed width for the PreparationMini */
+.drag-drop-context {
+  width: 300px;
+}
+
