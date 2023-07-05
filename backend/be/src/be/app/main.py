@@ -3,12 +3,14 @@
 from be.app.crud import (
     create_author_from_profile,
     create_recipe_from_post,
+    do_shuffle_recipes,
     get_all_recipes,
     get_recipe_from_shortcode,
 )
 from be.app.database import create_db_and_tables, get_session
 from be.app.sqlmodels.Author import Author, AuthorCreate, AuthorRead
 from be.app.sqlmodels.Recipe import Recipe, RecipeCreate, RecipeRead
+from be.app.sqlmodels.RecipeShuffle import RecipeShuffle
 from be.social.insta.loader import InstaLoader
 from fastapi import Depends, FastAPI, HTTPException, Query
 from sqlmodel import Session
@@ -139,6 +141,16 @@ def read_recipes(
     """Load all recipes with pagination."""
     recipes = get_all_recipes(session=session, offset=offset, limit=limit)
     return recipes
+
+
+@app.post("/recipes/shuffle")
+def shuffle_recipes(
+    *,
+    session: Session = Depends(get_session),
+    recipe_shuffle: RecipeShuffle,
+) -> None:
+    """Load all recipes with pagination."""
+    do_shuffle_recipes(session=session, recipe_shuffle=recipe_shuffle)
 
 
 @app.get("/tags")

@@ -18,6 +18,7 @@ class RecipeBase(SQLModel):
     caption_clean: str
     has_url_media: bool
     has_video_url_media: bool
+    sort_index: int 
 
     def __repr__(self) -> str:
         """Return a string representation of a Recipe."""

@@ -42,9 +42,17 @@ const RecipeBrowser = () => {
     }
   };
 
-  // TODO: here we receive the shortcodes to shuffle the recipes
-  const handleDragEnd = (result) => {
-    console.log(result);
+  // receive the shortcodes to shuffle the recipes
+  const handleDragEnd = async (shortcodeClicked, shortcodeReplaced) => {
+    console.log(shortcodeClicked, shortcodeReplaced);
+    const response = await axios.post(`${API_URL}/recipes/shuffle`, {
+      shortcodeClicked: shortcodeClicked,
+      shortcodeReplaced: shortcodeReplaced,
+      shuffle_type: "drag_and_drop",
+    });
+    console.log(response);
+    // we already updated the frontend, the list is already in the correct order
+    // fetchRecipes();
   };
 
   // TODO: here we receive the tags to filter the recipes
@@ -81,7 +89,11 @@ const RecipeBrowser = () => {
         handleTagAdd={handleTagAdd}
         handleTagRemove={handleTagRemove}
       />
-      <RecipeSorter recipes={recipes} handleDragEnd={handleDragEnd} />
+      <RecipeSorter
+        recipes={recipes}
+        handleDragEnd={handleDragEnd}
+        setRecipes={setRecipes}
+      />
       {/* TODO: add pagination, leave some overlap between pages
       so that a recipe can be sent to another page */}
     </div>
