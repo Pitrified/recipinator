@@ -26,14 +26,15 @@ const PreparationMini = ({ prep }) => {
 
   const handleDragEnd = (result) => {
     console.log(result);
+
+    if (!result.destination) return; // Not dropped in a valid location
+
     console.log(
       "moving from",
       result.source.index,
       "to",
       result.destination.index
     );
-
-    if (!result.destination) return; // Not dropped in a valid location
 
     const updatedSteps = Array.from(steps);
     // reorderedStep is the one we are popping off the array
