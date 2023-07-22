@@ -34,8 +34,8 @@ def get_il() -> InstaLoader:
 
     TODO: Proper login and save the state somehow.
     """
-    il = InstaLoader("pynstachiooo")
-    il.login()
+    il = InstaLoader("")
+    # il.login()
     return il
 
 
