@@ -13,10 +13,6 @@ from instaloader.structures import Post, Profile
 from instaloader.instaloader import Instaloader
 from loguru import logger as lg
 
-# FIXME move ig_fol in get_resource and use the func in the class methods as needed
-MEDIA_FOL = get_resource("media_fol")
-IG_FOL = MEDIA_FOL / "ig"
-
 
 @dataclass
 class PostIg:
@@ -37,19 +33,30 @@ class PostIg:
         1. Build the paths to the media files. TODO
         1. Check that the media files exist.
         """
+        self.build_paths()
         self.check_media_files()
+
+    @staticmethod
+    def build_post_fol(shortcode: str) -> Path:
+        """Build the path to the post folder."""
+        return get_resource("ig_fol") / "posts" / f"{shortcode}"
+
+    def build_paths(self) -> None:
+        """Build useful post paths."""
+        self.post_fol = PostIg.build_post_fol(self.shortcode)
+        self.url_media_fp = self.post_fol / "p_url.jpg"
+        self.video_url_media_fp = self.post_fol / "p_video_url.mp4"
 
     def check_media_files(self) -> None:
         """Check that the media files exist."""
-        post_fol = IG_FOL / "posts" / f"{self.shortcode}"
         # url
         had_url_media = self.has_url_media
-        self.has_url_media = (post_fol / "p_url.jpg").exists()
+        self.has_url_media = self.url_media_fp.exists()
         if had_url_media != self.has_url_media:
             lg.warning(f"URL media file missing for {self.shortcode}")
         # video
         had_video_url_media = self.has_video_url_media
-        self.has_video_url_media = (post_fol / "p_video_url.mp4").exists()
+        self.has_video_url_media = self.video_url_media_fp.exists()
         if had_video_url_media != self.has_video_url_media:
             lg.warning(f"Video URL media file missing for {self.shortcode}")
 
@@ -104,7 +111,7 @@ class PostIg:
         title = post.title if post.title else ""
 
         # download the media here
-        post_fol = IG_FOL / "posts" / f"{post.shortcode}"
+        post_fol = cls.build_post_fol(post.shortcode)
         check_create_fol(post_fol)
 
         # save the url content here
@@ -145,8 +152,8 @@ class PostIg:
         """Initialize from a JSON file, if it exists."""
         lg.info(f"Loading post from json {shortcode} ...")
         # build paths and check that the JSON file exists
-        json_fol = IG_FOL / "posts" / f"{shortcode}"
-        json_fp = json_fol / "data.json"
+        post_fol = cls.build_post_fol(shortcode)
+        json_fp = post_fol / "data.json"
         if not json_fp.exists():
             return None
         # load the data and turn it into a PostIg
@@ -158,21 +165,14 @@ class PostIg:
             lg.warning(f"Error loading {json_fp}: {e}")
             return None
 
-        # # check that the media files still exist
-        # # TODO log a warning if the file is missing
-        # # TODO should be done in post_init
-        # post_ig.has_url_media = (json_fol / "p_url.jpg").exists()
-        # post_ig.has_video_url_media = (json_fol / "p_video_url.mp4").exists()
-
         return post_ig
 
     def to_json(self) -> None:
         """Save to a JSON file."""
         lg.info(f"Saving post to json {self.shortcode}...")
-        post_fol = IG_FOL / "posts" / f"{self.shortcode}"
-        check_create_fol(post_fol)
+        check_create_fol(self.post_fol)
         json_str = jsons.dumps(self, jdkwargs=dict(indent=4))
-        json_fp = post_fol / "data.json"
+        json_fp = self.post_fol / "data.json"
         json_fp.write_text(json_str)
 
     @staticmethod
@@ -218,6 +218,33 @@ class ProfileIg:
     followers: int
     has_profile_pic_url_media: bool
 
+    def __post_init__(self) -> None:
+        """Perform post init operations.
+
+        1. Build the paths to the media files. TODO
+        1. Check that the media files exist.
+        """
+        self.build_paths()
+        self.check_media_files()
+
+    @staticmethod
+    def build_profile_fol(username: str) -> Path:
+        """Build the path to the profile folder."""
+        return get_resource("ig_fol") / "profiles" / f"{username}"
+
+    def build_paths(self) -> None:
+        """Build useful profile paths."""
+        self.profile_fol = ProfileIg.build_profile_fol(self.username)
+        self.profile_pic_url_media_fp = self.profile_fol / "profile_pic_url.jpg"
+
+    def check_media_files(self) -> None:
+        """Check that the media files exist."""
+        # profile pic
+        had_profile_pic_url_media = self.has_profile_pic_url_media
+        self.has_profile_pic_url_media = self.profile_pic_url_media_fp.exists()
+        if had_profile_pic_url_media != self.has_profile_pic_url_media:
+            lg.warning(f"Profile pic media file missing for {self.username}")
+
     @classmethod
     def load_profile(cls, username: str, L: Instaloader | None = None) -> Self:
         """Load a profile, from the cache if possible."""
@@ -257,7 +284,7 @@ class ProfileIg:
         - profile.profile_pic_url
         """
         # download the media here
-        profile_fol = IG_FOL / "profiles" / f"{profile.username}"
+        profile_fol = cls.build_profile_fol(profile.username)
         check_create_fol(profile_fol)
 
         # save the profile pic here
@@ -282,8 +309,8 @@ class ProfileIg:
         """Initialize from a JSON file, if it exists."""
         lg.info(f"Loading profile from json {username} ...")
         # build paths and check that the JSON file exists
-        json_fol = IG_FOL / "profiles" / f"{username}"
-        json_fp = json_fol / f"data.json"
+        profile_fol = cls.build_profile_fol(username)
+        json_fp = profile_fol / f"data.json"
         if not json_fp.exists():
             return None
         # load the data and turn it into a ProfileIg
@@ -295,21 +322,14 @@ class ProfileIg:
             lg.warning(f"Error loading {json_fp}: {e}")
             return None
 
-        # check that the media files still exist
-        # TODO log a warning if the file is missing
-        # TODO should be done in post_init
-        profile_pic_url_media_fp = json_fol / "profile_pic_url.jpg"
-        profile_ig.has_profile_pic_url_media = profile_pic_url_media_fp.exists()
-
         return profile_ig
 
     def to_json(self) -> None:
         """Save to a JSON file."""
         lg.info(f"Saving profile to json {self.username}...")
-        profile_fol = IG_FOL / "profiles" / f"{self.username}"
-        check_create_fol(profile_fol)
+        check_create_fol(self.profile_fol)
         json_str = jsons.dumps(self, jdkwargs=dict(indent=4))
-        json_fp = profile_fol / "data.json"
+        json_fp = self.profile_fol / "data.json"
         json_fp.write_text(json_str)
 
     @staticmethod
