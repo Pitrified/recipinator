@@ -34,3 +34,9 @@ def get_resource(
         return get_resource("root_fol") / "data" / "media"
     elif which_res == "database_fp":
         return get_resource("data_fol") / "database.db"
+
+
+def check_create_fol(fol: Path) -> None:
+    """Check if the folder exists, if not create it."""
+    if not fol.exists():
+        fol.mkdir(parents=True)
