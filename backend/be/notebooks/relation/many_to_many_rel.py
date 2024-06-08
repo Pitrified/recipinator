@@ -1,4 +1,8 @@
-"""SQLModel many to many relationship using link model as the Link table."""
+"""SQLModel many to many relationship using link model as the Link table.
+
+Use direct relationships between the main tables,
+just referencing the link model as the Link table.
+"""
 
 from pathlib import Path
 
@@ -153,4 +157,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-
