@@ -2776,6 +2776,21 @@ files = [
 tests = ["pytest"]
 
 [[package]]
+name = "py3langid"
+version = "0.2.2"
+description = "Fork of the language identification tool langid.py, featuring a modernized codebase and faster execution times."
+category = "main"
+optional = false
+python-versions = ">=3.6"
+files = [
+    {file = "py3langid-0.2.2-py3-none-any.whl", hash = "sha256:a5460ccc565c7b6a7a0e72f42236900b810e73c065a1b769a69fa9d9cff13f00"},
+    {file = "py3langid-0.2.2.tar.gz", hash = "sha256:b4de01dad7e701f29d216a0935e85e096cc8675903d23ea8445b2bb5f090b96f"},
+]
+
+[package.dependencies]
+numpy = "*"
+
+[[package]]
 name = "pyasn1"
 version = "0.6.0"
 description = "Pure-Python implementation of ASN.1 types and DER/BER/CER codecs (X.208)"
@@ -4273,4 +4288,4 @@ test = ["big-O", "importlib-resources", "jaraco.functools", "jaraco.itertools", 
 [metadata]
 lock-version = "2.0"
 python-versions = "~3.11"
-content-hash = "3a9109c44c435eef6f9ea25126e6211865f7a802b4d5075af3d6ba2fdb662fb9"
+content-hash = "5aa7bc0965c18e4a0ba8b359e3aeb3e9df1374b60211c2ad770ed7232e054e18"
