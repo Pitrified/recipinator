@@ -261,3 +261,39 @@ Basically if we have a RecipeShow component, fire that up to the side.
 We can have a graph of recipes, with edges between similar recipes.
 Embedding of recipes, then we can have a graph of recipes.
 Zoom in and out, click on a recipe to see it, hover to see the preview.
+
+### Recipe similarity
+
+We can have a recipe similarity, based on the ingredients, the tag, the keywords.
+
+1. Extract keywords from the recipe
+1. Embed the recipe
+    1. Ingredients
+    1. Tags
+    1. Keywords
+    1. Transcript
+
+### Ingredients clustering
+
+Automatically generate clusters of ingredients, then we can have a graph of ingredients,
+and navigate the ingredients to find similar recipes.
+
+### Automatic recipe generation
+
+Extract:
+* Language of the recipe
+* Title
+* Ingredients
+* Steps
+* Time
+
+### Automatic note taker
+
+While you cook, you can set a timer, take (vocal) notes, take pictures, take videos.
+Then we can have a recipe generated from that.
+
+### Language detector
+
+* https://ai.google.dev/edge/mediapipe/solutions/text/language_detector/python
+* https://github.com/Mimino666/langdetect
+* https://github.com/saffsd/langid.py -> forked to https://github.com/adbar/py3langid
