@@ -6,6 +6,7 @@ from typing import Any
 
 from langchain_chroma import Chroma
 from langchain_core.documents import Document
+from loguru import logger as lg
 
 
 def get_document_id(document: Document) -> str:
@@ -41,7 +42,17 @@ class VectorDB(Chroma):
         id_in_metadata: str = "",
         **kwargs: Any,
     ) -> list[str]:
-        """Add documents, computing unique ids, unless provided in the metadata."""
+        """Add documents, computing unique ids, unless provided in the metadata.
+
+        Will only add documents that are not already in the database.
+
+        Args:
+            documents (list[Document]): List of documents to add.
+            id_in_metadata (str, optional): Metadata key to use as id. Defaults to "".
+
+        Returns:
+            list[str]: List of ids of the newly added documents.
+        """
         # compute or get the metadata
         if id_in_metadata == "":
             ids = [get_document_id(doc) for doc in documents]
@@ -52,11 +63,9 @@ class VectorDB(Chroma):
         known_ids: list[str] = known_ids_data["ids"]
         # get the new ids and documents
         new_ids = [doc_id for doc_id in ids if doc_id not in known_ids]
-        new_documents = [
-            doc for doc, doc_id in zip(documents, ids) if doc_id in new_ids
-        ]
+        new_docs = [doc for doc, doc_id in zip(documents, ids) if doc_id in new_ids]
         # if there are no new documents, return an empty list
         if len(new_ids) == 0:
             return []
         # add the new documents, returning the ids
-        return super().add_documents(documents=new_documents, ids=new_ids, **kwargs)
+        return super().add_documents(documents=new_docs, ids=new_ids, **kwargs)
