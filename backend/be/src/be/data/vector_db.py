@@ -42,9 +42,21 @@ class VectorDB(Chroma):
         **kwargs: Any,
     ) -> list[str]:
         """Add documents, computing unique ids, unless provided in the metadata."""
+        # compute or get the metadata
         if id_in_metadata == "":
             ids = [get_document_id(doc) for doc in documents]
         else:
-            ids = [doc.metadata[id_in_metadata] for doc in documents]
-        # MAYBE use self.get to check if the document already exists
-        return super().add_documents(documents=documents, ids=ids, **kwargs)
+            ids: list[str] = [doc.metadata[id_in_metadata] for doc in documents]
+        # use self.get to check if the document already exists
+        known_ids_data = self.get(ids=ids, include=[])
+        known_ids: list[str] = known_ids_data["ids"]
+        # get the new ids and documents
+        new_ids = [doc_id for doc_id in ids if doc_id not in known_ids]
+        new_documents = [
+            doc for doc, doc_id in zip(documents, ids) if doc_id in new_ids
+        ]
+        # if there are no new documents, return an empty list
+        if len(new_ids) == 0:
+            return []
+        # add the new documents, returning the ids
+        return super().add_documents(documents=new_documents, ids=new_ids, **kwargs)
