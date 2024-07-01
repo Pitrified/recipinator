@@ -27,6 +27,8 @@ pydub = "^0.25.1"
 torch = "^2.3.1"
 chromadb = "^0.5.0"
 py3langid = "^0.2.2"
+langchain = "^0.2.6"
+langchain-chroma = "^0.1.2"
 
 
 [build-system]
