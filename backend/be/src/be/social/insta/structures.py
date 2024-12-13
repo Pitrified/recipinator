@@ -150,7 +150,7 @@ class PostIg:
     @classmethod
     def from_json(cls, shortcode: str) -> Self | None:
         """Initialize from a JSON file, if it exists."""
-        lg.info(f"Loading post from json {shortcode} ...")
+        # lg.info(f"Loading post from json {shortcode} ...")
         # build paths and check that the JSON file exists
         post_fol = cls.build_post_fol(shortcode)
         json_fp = post_fol / "data.json"
